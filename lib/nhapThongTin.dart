@@ -1,3 +1,4 @@
+import 'package:fertility_app/cubit/cubit/nhap_thong_tin_cubit.dart';
 import 'package:flutter/material.dart';
 
 class MyInputPage extends StatefulWidget {
@@ -7,53 +8,48 @@ class MyInputPage extends StatefulWidget {
   State<MyInputPage> createState() => _MyInputPageState();
 }
 
-enum Season { spring, summer, autumn, winter }
-
-enum childDiseases { yes, no }
-
-enum accidentOrTrauma { yes, no }
-
-enum surgicalIntervention { yes, no }
-
-enum hightFeverInLastYear { less3month, more3month, no }
-
-enum alcoholConsumption {
-  severalAday,
-  everyday,
-  severalAweek,
-  oncesAweek,
-  hardlyEverOrNever
-}
-
-enum smokingHabit { never, occasional, daily }
-
 class _MyInputPageState extends State<MyInputPage> {
+  TextEditingController cau9Controller = TextEditingController();
+  TextEditingController cau2Controller = TextEditingController();
+  final formKey1 = GlobalKey<FormState>();
+  final formKey2 = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    return const Expanded(
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Cau1(),
-            Divider(),
-            Cau2(),
-            Divider(),
-            Cau3(),
-            Divider(),
-            Cau4(),
-            Divider(),
-            Cau5(),
-            Divider(),
-            Cau6(),
-            Divider(),
-            Cau7(),
-            Divider(),
-            Cau8(),
-            Divider(),
-            Cau9(),
-            Divider(),
-            MyHandleSubmitButton()
-          ],
+    return SafeArea(
+      child: Expanded(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(padding: EdgeInsets.only(top: 10)),
+              Cau1(),
+              Divider(),
+              Cau2(
+                controller: cau2Controller,
+                formKey: formKey2,
+              ),
+              Divider(),
+              Cau3(),
+              Divider(),
+              Cau4(),
+              Divider(),
+              Cau5(),
+              Divider(),
+              Cau6(),
+              Divider(),
+              Cau7(),
+              Divider(),
+              Cau8(),
+              Divider(),
+              Cau9(controller: cau9Controller, formKey: formKey1),
+              Divider(),
+              MyHandleSubmitButton(
+                formKey2: formKey2,
+                formKey: formKey1,
+                controller_cau9: cau9Controller,
+                controller_cau2: cau2Controller,
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -61,16 +57,16 @@ class _MyInputPageState extends State<MyInputPage> {
 }
 
 class Cau1 extends StatefulWidget {
-  const Cau1({super.key});
-
+  Cau1({super.key});
+  Season? season = Season.spring;
   @override
-  State<Cau1> createState() => _Cau1State();
+  State<Cau1> createState() => Cau1State();
 }
 
-class _Cau1State extends State<Cau1> {
+class Cau1State extends State<Cau1> {
   @override
   Widget build(BuildContext context) {
-    Season? season = Season.spring;
+    // Season? season = Season.spring;
     return Column(
       children: [
         const Center(
@@ -88,10 +84,10 @@ class _Cau1State extends State<Cau1> {
                 title: const Text('Spring'),
                 leading: Radio<Season>(
                   value: Season.spring,
-                  groupValue: season,
+                  groupValue: widget.season,
                   onChanged: (Season? value) {
                     setState(() {
-                      season = value;
+                      widget.season = value;
                     });
                   },
                 ),
@@ -102,10 +98,10 @@ class _Cau1State extends State<Cau1> {
                 title: const Text('Summer'),
                 leading: Radio<Season>(
                   value: Season.summer,
-                  groupValue: season,
+                  groupValue: widget.season,
                   onChanged: (Season? value) {
                     setState(() {
-                      season = value;
+                      widget.season = value;
                     });
                   },
                 ),
@@ -120,10 +116,10 @@ class _Cau1State extends State<Cau1> {
                 title: const Text('Autumn'),
                 leading: Radio<Season>(
                   value: Season.autumn,
-                  groupValue: season,
+                  groupValue: widget.season,
                   onChanged: (Season? value) {
                     setState(() {
-                      season = value;
+                      widget.season = value;
                     });
                   },
                 ),
@@ -134,10 +130,10 @@ class _Cau1State extends State<Cau1> {
                 title: const Text('Winter'),
                 leading: Radio<Season>(
                   value: Season.winter,
-                  groupValue: season,
+                  groupValue: widget.season,
                   onChanged: (Season? value) {
                     setState(() {
-                      season = value;
+                      widget.season = value;
                     });
                   },
                 ),
@@ -151,14 +147,14 @@ class _Cau1State extends State<Cau1> {
 }
 
 class Cau2 extends StatefulWidget {
-  const Cau2({super.key});
-
+  Cau2({super.key, required this.controller, this.formKey});
+  final TextEditingController controller;
+  final formKey;
   @override
-  State<Cau2> createState() => _Cau2State();
+  State<Cau2> createState() => Cau2State();
 }
 
-class _Cau2State extends State<Cau2> {
-  TextEditingController ageController = TextEditingController();
+class Cau2State extends State<Cau2> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -173,13 +169,26 @@ class _Cau2State extends State<Cau2> {
         ),
         Padding(
           padding: const EdgeInsets.only(right: 20, left: 20),
-          child: TextField(
-            controller: ageController,
-            decoration: const InputDecoration(
-              border: UnderlineInputBorder(),
-              hintText: 'Enter age from 18 to 36',
+          child: Form(
+            key: widget.formKey,
+            child: TextFormField(
+              onChanged: (value) => print(value.runtimeType),
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return 'Please input';
+                }
+                if (int.parse(value) < 18 || int.parse(value) > 36) {
+                  return 'Please enter correct number from 18 to 36 only';
+                }
+                return null;
+              },
+              controller: widget.controller,
+              decoration: const InputDecoration(
+                border: UnderlineInputBorder(),
+                hintText: 'Enter age from 18 to 36',
+              ),
+              keyboardType: TextInputType.number,
             ),
-            keyboardType: TextInputType.number,
           ),
         ),
       ],
@@ -188,14 +197,13 @@ class _Cau2State extends State<Cau2> {
 }
 
 class Cau3 extends StatefulWidget {
-  const Cau3({super.key});
-
+  Cau3({super.key});
+  childDiseases? cdi = childDiseases.no;
   @override
-  State<Cau3> createState() => _Cau3State();
+  State<Cau3> createState() => Cau3State();
 }
 
-class _Cau3State extends State<Cau3> {
-  childDiseases? cdi = childDiseases.no;
+class Cau3State extends State<Cau3> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -215,10 +223,10 @@ class _Cau3State extends State<Cau3> {
                 title: const Text('Yes'),
                 leading: Radio<childDiseases>(
                   value: childDiseases.yes,
-                  groupValue: cdi,
+                  groupValue: widget.cdi,
                   onChanged: (childDiseases? value) {
                     setState(() {
-                      cdi = value;
+                      widget.cdi = value;
                     });
                   },
                 ),
@@ -229,10 +237,10 @@ class _Cau3State extends State<Cau3> {
                 title: const Text('No'),
                 leading: Radio<childDiseases>(
                   value: childDiseases.no,
-                  groupValue: cdi,
+                  groupValue: widget.cdi,
                   onChanged: (childDiseases? value) {
                     setState(() {
-                      cdi = value;
+                      widget.cdi = value;
                     });
                   },
                 ),
@@ -246,14 +254,13 @@ class _Cau3State extends State<Cau3> {
 }
 
 class Cau4 extends StatefulWidget {
-  const Cau4({super.key});
-
+  Cau4({super.key});
+  accidentOrTrauma? acdot = accidentOrTrauma.no;
   @override
-  State<Cau4> createState() => _Cau4State();
+  State<Cau4> createState() => Cau4State();
 }
 
-class _Cau4State extends State<Cau4> {
-  accidentOrTrauma? acdot = accidentOrTrauma.no;
+class Cau4State extends State<Cau4> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -273,10 +280,10 @@ class _Cau4State extends State<Cau4> {
                 title: const Text('Yes'),
                 leading: Radio<accidentOrTrauma>(
                   value: accidentOrTrauma.yes,
-                  groupValue: acdot,
+                  groupValue: widget.acdot,
                   onChanged: (accidentOrTrauma? value) {
                     setState(() {
-                      acdot = value;
+                      widget.acdot = value;
                     });
                   },
                 ),
@@ -287,10 +294,10 @@ class _Cau4State extends State<Cau4> {
                 title: const Text('No'),
                 leading: Radio<accidentOrTrauma>(
                   value: accidentOrTrauma.no,
-                  groupValue: acdot,
+                  groupValue: widget.acdot,
                   onChanged: (accidentOrTrauma? value) {
                     setState(() {
-                      acdot = value;
+                      widget.acdot = value;
                     });
                   },
                 ),
@@ -304,14 +311,13 @@ class _Cau4State extends State<Cau4> {
 }
 
 class Cau5 extends StatefulWidget {
-  const Cau5({super.key});
-
+  Cau5({super.key});
+  surgicalIntervention? si = surgicalIntervention.no;
   @override
-  State<Cau5> createState() => _Cau5State();
+  State<Cau5> createState() => Cau5State();
 }
 
-class _Cau5State extends State<Cau5> {
-  surgicalIntervention? si = surgicalIntervention.no;
+class Cau5State extends State<Cau5> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -331,10 +337,10 @@ class _Cau5State extends State<Cau5> {
                 title: const Text('Yes'),
                 leading: Radio<surgicalIntervention>(
                   value: surgicalIntervention.yes,
-                  groupValue: si,
+                  groupValue: widget.si,
                   onChanged: (surgicalIntervention? value) {
                     setState(() {
-                      si = value;
+                      widget.si = value;
                     });
                   },
                 ),
@@ -345,10 +351,10 @@ class _Cau5State extends State<Cau5> {
                 title: const Text('No'),
                 leading: Radio<surgicalIntervention>(
                   value: surgicalIntervention.no,
-                  groupValue: si,
+                  groupValue: widget.si,
                   onChanged: (surgicalIntervention? value) {
                     setState(() {
-                      si = value;
+                      widget.si = value;
                     });
                   },
                 ),
@@ -362,14 +368,13 @@ class _Cau5State extends State<Cau5> {
 }
 
 class Cau6 extends StatefulWidget {
-  const Cau6({super.key});
-
+  Cau6({super.key});
+  hightFeverInLastYear? hily = hightFeverInLastYear.no;
   @override
-  State<Cau6> createState() => _Cau6State();
+  State<Cau6> createState() => Cau6State();
 }
 
-class _Cau6State extends State<Cau6> {
-  hightFeverInLastYear? hily = hightFeverInLastYear.no;
+class Cau6State extends State<Cau6> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -389,10 +394,10 @@ class _Cau6State extends State<Cau6> {
                 title: const Text('Less than 3 month'),
                 leading: Radio<hightFeverInLastYear>(
                   value: hightFeverInLastYear.less3month,
-                  groupValue: hily,
+                  groupValue: widget.hily,
                   onChanged: (hightFeverInLastYear? value) {
                     setState(() {
-                      hily = value;
+                      widget.hily = value;
                     });
                   },
                 ),
@@ -403,10 +408,10 @@ class _Cau6State extends State<Cau6> {
                 title: const Text('No'),
                 leading: Radio<hightFeverInLastYear>(
                   value: hightFeverInLastYear.no,
-                  groupValue: hily,
+                  groupValue: widget.hily,
                   onChanged: (hightFeverInLastYear? value) {
                     setState(() {
-                      hily = value;
+                      widget.hily = value;
                     });
                   },
                 ),
@@ -418,10 +423,10 @@ class _Cau6State extends State<Cau6> {
           title: const Text('More than 3 month'),
           leading: Radio<hightFeverInLastYear>(
             value: hightFeverInLastYear.more3month,
-            groupValue: hily,
+            groupValue: widget.hily,
             onChanged: (hightFeverInLastYear? value) {
               setState(() {
-                hily = value;
+                widget.hily = value;
               });
             },
           ),
@@ -432,16 +437,15 @@ class _Cau6State extends State<Cau6> {
 }
 
 class Cau7 extends StatefulWidget {
-  const Cau7({super.key});
-
+  Cau7({super.key});
+  alcoholConsumption? ac = alcoholConsumption.severalAday;
   @override
-  State<Cau7> createState() => _Cau7State();
+  State<Cau7> createState() => Cau7State();
 }
 
-class _Cau7State extends State<Cau7> {
+class Cau7State extends State<Cau7> {
   @override
   Widget build(BuildContext context) {
-    alcoholConsumption? ac = alcoholConsumption.everyday;
     return Column(
       children: [
         const Center(
@@ -461,10 +465,10 @@ class _Cau7State extends State<Cau7> {
                 title: const Text('Several times a day'),
                 leading: Radio<alcoholConsumption>(
                   value: alcoholConsumption.severalAday,
-                  groupValue: ac,
+                  groupValue: widget.ac,
                   onChanged: (alcoholConsumption? value) {
                     setState(() {
-                      ac = value;
+                      widget.ac = value;
                     });
                   },
                 ),
@@ -475,10 +479,10 @@ class _Cau7State extends State<Cau7> {
                 title: const Text('Everyday'),
                 leading: Radio<alcoholConsumption>(
                   value: alcoholConsumption.everyday,
-                  groupValue: ac,
+                  groupValue: widget.ac,
                   onChanged: (alcoholConsumption? value) {
                     setState(() {
-                      ac = value;
+                      widget.ac = value;
                     });
                   },
                 ),
@@ -493,10 +497,10 @@ class _Cau7State extends State<Cau7> {
                 title: const Text('Onces a week'),
                 leading: Radio<alcoholConsumption>(
                   value: alcoholConsumption.oncesAweek,
-                  groupValue: ac,
+                  groupValue: widget.ac,
                   onChanged: (alcoholConsumption? value) {
                     setState(() {
-                      ac = value;
+                      widget.ac = value;
                     });
                   },
                 ),
@@ -507,10 +511,10 @@ class _Cau7State extends State<Cau7> {
                 title: const Text('Several a week'),
                 leading: Radio<alcoholConsumption>(
                   value: alcoholConsumption.severalAweek,
-                  groupValue: ac,
+                  groupValue: widget.ac,
                   onChanged: (alcoholConsumption? value) {
                     setState(() {
-                      ac = value;
+                      widget.ac = value;
                     });
                   },
                 ),
@@ -522,10 +526,10 @@ class _Cau7State extends State<Cau7> {
           title: const Text('Hardly ever or never'),
           leading: Radio<alcoholConsumption>(
             value: alcoholConsumption.hardlyEverOrNever,
-            groupValue: ac,
+            groupValue: widget.ac,
             onChanged: (alcoholConsumption? value) {
               setState(() {
-                ac = value;
+                widget.ac = value;
               });
             },
           ),
@@ -536,14 +540,13 @@ class _Cau7State extends State<Cau7> {
 }
 
 class Cau8 extends StatefulWidget {
-  const Cau8({super.key});
-
+  Cau8({super.key});
+  smokingHabit? sh = smokingHabit.never;
   @override
-  State<Cau8> createState() => _Cau8State();
+  State<Cau8> createState() => Cau8State();
 }
 
-class _Cau8State extends State<Cau8> {
-  smokingHabit? sh = smokingHabit.never;
+class Cau8State extends State<Cau8> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -563,10 +566,10 @@ class _Cau8State extends State<Cau8> {
                 title: const Text('Occasionaly'),
                 leading: Radio<smokingHabit>(
                   value: smokingHabit.occasional,
-                  groupValue: sh,
+                  groupValue: widget.sh,
                   onChanged: (smokingHabit? value) {
                     setState(() {
-                      sh = value;
+                      widget.sh = value;
                     });
                   },
                 ),
@@ -577,10 +580,10 @@ class _Cau8State extends State<Cau8> {
                 title: const Text('Daily'),
                 leading: Radio<smokingHabit>(
                   value: smokingHabit.daily,
-                  groupValue: sh,
+                  groupValue: widget.sh,
                   onChanged: (smokingHabit? value) {
                     setState(() {
-                      sh = value;
+                      widget.sh = value;
                     });
                   },
                 ),
@@ -592,10 +595,10 @@ class _Cau8State extends State<Cau8> {
           title: const Text('Never'),
           leading: Radio<smokingHabit>(
             value: smokingHabit.never,
-            groupValue: sh,
+            groupValue: widget.sh,
             onChanged: (smokingHabit? value) {
               setState(() {
-                sh = value;
+                widget.sh = value;
               });
             },
           ),
@@ -606,14 +609,19 @@ class _Cau8State extends State<Cau8> {
 }
 
 class Cau9 extends StatefulWidget {
-  const Cau9({super.key});
-
+  Cau9({super.key, required this.controller, this.formKey});
+  final TextEditingController controller;
+  final formKey;
+  // TextEditingController hoursSitting = TextEditingController();
   @override
-  State<Cau9> createState() => _Cau9State();
+  State<Cau9> createState() => Cau9State();
 }
 
-class _Cau9State extends State<Cau9> {
-  TextEditingController hoursSitting = TextEditingController();
+class Cau9State extends State<Cau9> {
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -628,13 +636,25 @@ class _Cau9State extends State<Cau9> {
         ),
         Padding(
           padding: const EdgeInsets.only(right: 20, left: 20),
-          child: TextField(
-            controller: hoursSitting,
-            decoration: const InputDecoration(
-              border: UnderlineInputBorder(),
-              hintText: 'Enter number of hours sitting from 0 to 16',
+          child: Form(
+            key: widget.formKey,
+            child: TextFormField(
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return 'Please input';
+                }
+                if (int.parse(value!) < 0 || int.parse(value) > 16) {
+                  return 'Please enter correct number from 0 to 16 only ';
+                }
+                return null;
+              },
+              controller: widget.controller,
+              decoration: const InputDecoration(
+                border: UnderlineInputBorder(),
+                hintText: 'Enter number of hours sitting from 0 to 16',
+              ),
+              keyboardType: TextInputType.number,
             ),
-            keyboardType: TextInputType.number,
           ),
         ),
       ],
@@ -643,18 +663,226 @@ class _Cau9State extends State<Cau9> {
 }
 
 class MyHandleSubmitButton extends StatefulWidget {
-  const MyHandleSubmitButton({super.key});
-
+  MyHandleSubmitButton(
+      {super.key,
+      required this.controller_cau2,
+      required this.controller_cau9,
+      this.formKey,
+      this.formKey2});
+  final TextEditingController controller_cau2;
+  final TextEditingController controller_cau9;
+  final formKey;
+  final formKey2;
   @override
-  State<MyHandleSubmitButton> createState() => _MyHandleSubmitButtonState();
+  State<MyHandleSubmitButton> createState() => MyHandleSubmitButtonState();
 }
 
-class _MyHandleSubmitButtonState extends State<MyHandleSubmitButton> {
+class MyHandleSubmitButtonState extends State<MyHandleSubmitButton> {
+  final data = List<double>.filled(9, 0);
   @override
   Widget build(BuildContext context) {
     return Center(
-      child:
-          ElevatedButton(onPressed: () {}, child: Text("Submit information")),
+      child: ElevatedButton(
+          onPressed: () => _showDialog(context),
+          child: Text("Submit information")),
     );
+  }
+
+  void _showDialog(BuildContext context) {
+    //var cau9 = Cau9State().toString();
+    // var cau90 = Cau9().hoursSitting.text;
+    // print(Cau1().season.toString());
+
+    check(context);
+    // Delay for 2 seconds and then show the second popup
+  }
+
+  void check(BuildContext context) {
+    print(Cau9(
+      controller: widget.controller_cau9,
+      formKey: widget.formKey,
+    ).formKey.currentState);
+
+    print(Cau2(
+      controller: widget.controller_cau2,
+      formKey: widget.formKey2,
+    ).formKey.currentState);
+    // print(Cau9State().formKey1.currentState);
+    if (Cau9(
+      controller: widget.controller_cau9,
+      formKey: widget.formKey,
+    ).formKey.currentState.validate()) {
+      if (Cau2(controller: widget.controller_cau2, formKey: widget.formKey2)
+          .formKey
+          .currentState
+          .validate()) {
+        showDialog<String>(
+          context: context,
+          builder: (BuildContext context) {
+            // Show the first popup
+            return const AlertDialog(
+              title: Text('Saving information...'),
+              content: Image(image: AssetImage("./assets/images/waiting.gif")),
+            );
+          },
+        );
+        print(widget.controller_cau2.text);
+        print(widget.controller_cau9.text);
+        // widget.controller_cau2.text == '' ? 18 : widget.controller_cau2.text;
+        // widget.controller_cau9.text == '';
+        double cau1 = 0.0;
+        double cau2 = 0.0;
+        double cau3 = 0.0;
+        double cau4 = 0.0;
+        double cau5 = 0.0;
+        double cau6 = 0.0;
+        double cau7 = 0.0;
+        double cau8 = 0.0;
+        double cau9 = 0.0;
+        switch (Cau1().season) {
+          case Season.autumn:
+            cau1 = 1;
+          case Season.summer:
+            cau1 = 0.33;
+          // TODO: Handle this case.
+          case Season.spring:
+            cau1 = -0.33;
+          case Season.winter:
+            cau1 = -1.0;
+          // TODO: Handle this case.
+          case null:
+        }
+        cau2 = chuyendoiso(double.parse(widget.controller_cau2.text));
+        cau9 = chuyendosocau9(double.parse(widget.controller_cau9.text));
+        switch (Cau3().cdi) {
+          case null:
+          case childDiseases.yes:
+            cau2 = 0;
+          case childDiseases.no:
+            cau2 = 1;
+          // TODO: Handle this case.
+        }
+        switch (Cau4().acdot) {
+          case null:
+          case accidentOrTrauma.no:
+            cau4 = 1;
+          // TODO: Handle this case.
+          case accidentOrTrauma.yes:
+            cau4 = 0;
+          // TODO: Handle this case.
+        }
+
+        switch (Cau5().si) {
+          case null:
+          case surgicalIntervention.no:
+            cau5 = 1;
+          // TODO: Handle this case.
+          case surgicalIntervention.yes:
+            cau5 = 0;
+          // TODO: Handle this case.
+        }
+        switch (Cau6().hily) {
+          case null:
+          case hightFeverInLastYear.more3month:
+            cau6 = 0;
+          // TODO: Handle this case.
+          case hightFeverInLastYear.no:
+            cau6 = 1;
+          // TODO: Handle this case.
+          case hightFeverInLastYear.less3month:
+            cau6 = -1;
+          // TODO: Handle this case.
+        }
+        switch (Cau7().ac) {
+          case null:
+          case alcoholConsumption.everyday:
+            // TODO: Handle this case.
+
+            cau7 = 0.25;
+          case alcoholConsumption.hardlyEverOrNever:
+            cau7 = 1;
+          // TODO: Handle this case.
+          case alcoholConsumption.oncesAweek:
+            cau7 = 0.75;
+          // TODO: Handle this case.
+          case alcoholConsumption.severalAday:
+            cau7 = 0.0;
+          // TODO: Handle this case.
+          case alcoholConsumption.severalAweek:
+            cau7 = 0.5;
+
+          // TODO: Handle this case.
+        }
+
+        switch (Cau8().sh) {
+          case null:
+          case smokingHabit.never:
+            cau8 = -1;
+          // TODO: Handle this case.
+          case smokingHabit.occasional:
+            cau8 = 0;
+          // TODO: Handle this case.
+          // TODO: Handle this case.
+          case smokingHabit.daily:
+            cau8 = 1;
+          // TODO: Handle this case.
+        }
+        data[0] = cau1;
+        data[1] = cau2;
+        data[2] = cau3;
+        data[3] = cau4;
+        data[4] = cau5;
+        data[5] = cau6;
+        data[6] = cau7;
+        data[7] = cau8;
+        data[8] = cau9;
+        print(data);
+        Future.delayed(Duration(seconds: 2), () {
+          Navigator.of(context).pop(); // Close the first popup
+          _showSecondDialog(context); // Show the second popup
+        });
+      }
+    }
+  }
+
+  void _showSecondDialog(BuildContext context) {
+    showDialog<String>(
+      context: context,
+      builder: (BuildContext context) {
+        // Show the second popup
+        return AlertDialog(
+          title: Text('Information Saved successfully'),
+          content: Text('Now you can move to diagnose page'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Ok'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  double chuyendoiso(double n) {
+    var min_age = 18;
+    var max_age = 36;
+    double normalized_value = (n - min_age) / (max_age - min_age);
+    return normalized_value;
+  }
+
+  double chuyendosocau9(double n) {
+    var min_hour = 0;
+    var max_hour = 16;
+    double normalized_value = (n - min_hour) / (max_hour - min_hour);
+    if (normalized_value < 0) {
+      normalized_value == 0;
+    }
+    if (normalized_value > 1) {
+      normalized_value == 1;
+    }
+    return normalized_value;
   }
 }
