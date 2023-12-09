@@ -1,18 +1,21 @@
 import 'package:fertility_app/cubit/cubit/nhap_thong_tin_cubit.dart';
+import 'package:fertility_app/provider/model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MyInputPage extends StatefulWidget {
   const MyInputPage({super.key});
 
   @override
-  State<MyInputPage> createState() => _MyInputPageState();
+  State<MyInputPage> createState() => MyInputPageState();
 }
 
-class _MyInputPageState extends State<MyInputPage> {
+class MyInputPageState extends State<MyInputPage> {
   TextEditingController cau9Controller = TextEditingController();
   TextEditingController cau2Controller = TextEditingController();
   final formKey1 = GlobalKey<FormState>();
   final formKey2 = GlobalKey<FormState>();
+  List<double> data = List<double>.filled(9, 0);
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -43,6 +46,7 @@ class _MyInputPageState extends State<MyInputPage> {
               Cau9(controller: cau9Controller, formKey: formKey1),
               Divider(),
               MyHandleSubmitButton(
+                data: data,
                 formKey2: formKey2,
                 formKey: formKey1,
                 controller_cau9: cau9Controller,
@@ -668,46 +672,46 @@ class MyHandleSubmitButton extends StatefulWidget {
       required this.controller_cau2,
       required this.controller_cau9,
       this.formKey,
-      this.formKey2});
+      this.formKey2,
+      this.data});
   final TextEditingController controller_cau2;
   final TextEditingController controller_cau9;
   final formKey;
   final formKey2;
+  final data;
   @override
   State<MyHandleSubmitButton> createState() => MyHandleSubmitButtonState();
 }
 
 class MyHandleSubmitButtonState extends State<MyHandleSubmitButton> {
-  final data = List<double>.filled(9, 0);
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: ElevatedButton(
-          onPressed: () => _showDialog(context),
-          child: Text("Submit information")),
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Center(
+        child: ElevatedButton(
+            onPressed: () => _showDialog(context),
+            child: Text("Submit information")),
+      ),
     );
   }
 
   void _showDialog(BuildContext context) {
-    //var cau9 = Cau9State().toString();
-    // var cau90 = Cau9().hoursSitting.text;
-    // print(Cau1().season.toString());
-
     check(context);
-    // Delay for 2 seconds and then show the second popup
   }
 
   void check(BuildContext context) {
-    print(Cau9(
-      controller: widget.controller_cau9,
-      formKey: widget.formKey,
-    ).formKey.currentState);
+    // print(Cau9(
+    //   controller: widget.controller_cau9,
+    //   formKey: widget.formKey,
+    // ).formKey.currentState);
 
-    print(Cau2(
-      controller: widget.controller_cau2,
-      formKey: widget.formKey2,
-    ).formKey.currentState);
+    // print(Cau2(
+    //   controller: widget.controller_cau2,
+    //   formKey: widget.formKey2,
+    // ).formKey.currentState);
     // print(Cau9State().formKey1.currentState);
+    //check 2 cai input neu thanh cong thi popup
     if (Cau9(
       controller: widget.controller_cau9,
       formKey: widget.formKey,
@@ -726,123 +730,126 @@ class MyHandleSubmitButtonState extends State<MyHandleSubmitButton> {
             );
           },
         );
-        print(widget.controller_cau2.text);
-        print(widget.controller_cau9.text);
-        // widget.controller_cau2.text == '' ? 18 : widget.controller_cau2.text;
-        // widget.controller_cau9.text == '';
-        double cau1 = 0.0;
-        double cau2 = 0.0;
-        double cau3 = 0.0;
-        double cau4 = 0.0;
-        double cau5 = 0.0;
-        double cau6 = 0.0;
-        double cau7 = 0.0;
-        double cau8 = 0.0;
-        double cau9 = 0.0;
-        switch (Cau1().season) {
-          case Season.autumn:
-            cau1 = 1;
-          case Season.summer:
-            cau1 = 0.33;
-          // TODO: Handle this case.
-          case Season.spring:
-            cau1 = -0.33;
-          case Season.winter:
-            cau1 = -1.0;
-          // TODO: Handle this case.
-          case null:
-        }
-        cau2 = chuyendoiso(double.parse(widget.controller_cau2.text));
-        cau9 = chuyendosocau9(double.parse(widget.controller_cau9.text));
-        switch (Cau3().cdi) {
-          case null:
-          case childDiseases.yes:
-            cau2 = 0;
-          case childDiseases.no:
-            cau2 = 1;
-          // TODO: Handle this case.
-        }
-        switch (Cau4().acdot) {
-          case null:
-          case accidentOrTrauma.no:
-            cau4 = 1;
-          // TODO: Handle this case.
-          case accidentOrTrauma.yes:
-            cau4 = 0;
-          // TODO: Handle this case.
-        }
 
-        switch (Cau5().si) {
-          case null:
-          case surgicalIntervention.no:
-            cau5 = 1;
-          // TODO: Handle this case.
-          case surgicalIntervention.yes:
-            cau5 = 0;
-          // TODO: Handle this case.
-        }
-        switch (Cau6().hily) {
-          case null:
-          case hightFeverInLastYear.more3month:
-            cau6 = 0;
-          // TODO: Handle this case.
-          case hightFeverInLastYear.no:
-            cau6 = 1;
-          // TODO: Handle this case.
-          case hightFeverInLastYear.less3month:
-            cau6 = -1;
-          // TODO: Handle this case.
-        }
-        switch (Cau7().ac) {
-          case null:
-          case alcoholConsumption.everyday:
-            // TODO: Handle this case.
-
-            cau7 = 0.25;
-          case alcoholConsumption.hardlyEverOrNever:
-            cau7 = 1;
-          // TODO: Handle this case.
-          case alcoholConsumption.oncesAweek:
-            cau7 = 0.75;
-          // TODO: Handle this case.
-          case alcoholConsumption.severalAday:
-            cau7 = 0.0;
-          // TODO: Handle this case.
-          case alcoholConsumption.severalAweek:
-            cau7 = 0.5;
-
-          // TODO: Handle this case.
-        }
-
-        switch (Cau8().sh) {
-          case null:
-          case smokingHabit.never:
-            cau8 = -1;
-          // TODO: Handle this case.
-          case smokingHabit.occasional:
-            cau8 = 0;
-          // TODO: Handle this case.
-          // TODO: Handle this case.
-          case smokingHabit.daily:
-            cau8 = 1;
-          // TODO: Handle this case.
-        }
-        data[0] = cau1;
-        data[1] = cau2;
-        data[2] = cau3;
-        data[3] = cau4;
-        data[4] = cau5;
-        data[5] = cau6;
-        data[6] = cau7;
-        data[7] = cau8;
-        data[8] = cau9;
-        print(data);
+        handledata();
         Future.delayed(Duration(seconds: 2), () {
           Navigator.of(context).pop(); // Close the first popup
           _showSecondDialog(context); // Show the second popup
         });
       }
     }
+  }
+
+  void handledata() {
+    double cau1 = 0.0;
+    double cau2 = 0.0;
+    double cau3 = 0.0;
+    double cau4 = 0.0;
+    double cau5 = 0.0;
+    double cau6 = 0.0;
+    double cau7 = 0.0;
+    double cau8 = 0.0;
+    double cau9 = 0.0;
+    switch (Cau1().season) {
+      case Season.autumn:
+        cau1 = 1;
+      case Season.summer:
+        cau1 = 0.33;
+      // TODO: Handle this case.
+      case Season.spring:
+        cau1 = -0.33;
+      case Season.winter:
+        cau1 = -1.0;
+      // TODO: Handle this case.
+      case null:
+    }
+    cau2 = chuyendoiso(double.parse(widget.controller_cau2.text));
+    cau9 = chuyendosocau9(double.parse(widget.controller_cau9.text));
+    switch (Cau3().cdi) {
+      case null:
+      case childDiseases.yes:
+        cau2 = 0;
+      case childDiseases.no:
+        cau2 = 1;
+      // TODO: Handle this case.
+    }
+    switch (Cau4().acdot) {
+      case null:
+      case accidentOrTrauma.no:
+        cau4 = 1;
+      // TODO: Handle this case.
+      case accidentOrTrauma.yes:
+        cau4 = 0;
+      // TODO: Handle this case.
+    }
+
+    switch (Cau5().si) {
+      case null:
+      case surgicalIntervention.no:
+        cau5 = 1;
+      // TODO: Handle this case.
+      case surgicalIntervention.yes:
+        cau5 = 0;
+      // TODO: Handle this case.
+    }
+    switch (Cau6().hily) {
+      case null:
+      case hightFeverInLastYear.more3month:
+        cau6 = 0;
+      // TODO: Handle this case.
+      case hightFeverInLastYear.no:
+        cau6 = 1;
+      // TODO: Handle this case.
+      case hightFeverInLastYear.less3month:
+        cau6 = -1;
+      // TODO: Handle this case.
+    }
+    switch (Cau7().ac) {
+      case null:
+      case alcoholConsumption.everyday:
+        // TODO: Handle this case.
+
+        cau7 = 0.25;
+      case alcoholConsumption.hardlyEverOrNever:
+        cau7 = 1;
+      // TODO: Handle this case.
+      case alcoholConsumption.oncesAweek:
+        cau7 = 0.75;
+      // TODO: Handle this case.
+      case alcoholConsumption.severalAday:
+        cau7 = 0.0;
+      // TODO: Handle this case.
+      case alcoholConsumption.severalAweek:
+        cau7 = 0.5;
+
+      // TODO: Handle this case.
+    }
+
+    switch (Cau8().sh) {
+      case null:
+      case smokingHabit.never:
+        cau8 = -1;
+      // TODO: Handle this case.
+      case smokingHabit.occasional:
+        cau8 = 0;
+      // TODO: Handle this case.
+      // TODO: Handle this case.
+      case smokingHabit.daily:
+        cau8 = 1;
+      // TODO: Handle this case.
+    }
+    widget.data[0] = cau1;
+    widget.data[1] = cau2;
+    widget.data[2] = cau3;
+    widget.data[3] = cau4;
+    widget.data[4] = cau5;
+    widget.data[5] = cau6;
+    widget.data[6] = cau7;
+    widget.data[7] = cau8;
+    widget.data[8] = cau9;
+    print(widget.data);
+    MyData myData = Provider.of<MyData>(context, listen: false);
+    myData.updateGlobalVariable(widget.data);
   }
 
   void _showSecondDialog(BuildContext context) {
