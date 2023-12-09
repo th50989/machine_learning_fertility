@@ -2,15 +2,20 @@ import 'package:fertility_app/classification/gaussian.dart';
 import 'package:fertility_app/classification/logisticRegression.dart';
 import 'package:fertility_app/classification/neuralNetwork.dart';
 import 'package:fertility_app/classification/supportVectorMachine.dart';
+import 'package:fertility_app/provider/model.dart';
 import 'package:fertility_app/regression/multipleRegression.dart';
 import 'package:fertility_app/regression/neuralNetwork.dart';
 import 'package:fertility_app/nhapThongTin.dart';
 import 'package:fertility_app/splashScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(MaterialApp(
-    home: MySplashScreen(),
+  runApp(ChangeNotifierProvider(
+    create: (context) => MyData(),
+    child: MaterialApp(
+      home: MySplashScreen(),
+    ),
   ));
 }
 
