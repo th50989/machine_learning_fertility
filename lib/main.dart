@@ -61,7 +61,7 @@ class _MyDrawerState extends State<MyDrawer> {
           ),
           ExpansionTile(
             title: const Text("Regression"),
-            leading: const Icon(Icons.person), //add icon
+            leading: const Icon(Icons.line_axis), //add icon
             childrenPadding: const EdgeInsets.only(left: 60), //children padding
             children: [
               ListTile(
@@ -95,7 +95,7 @@ class _MyDrawerState extends State<MyDrawer> {
           ),
           ExpansionTile(
             title: const Text("Classification"),
-            leading: const Icon(Icons.person), //add icon
+            leading: const Icon(Icons.account_tree_outlined), //add icon
             childrenPadding: const EdgeInsets.only(left: 60), //children padding
             children: [
               ListTile(
@@ -123,32 +123,64 @@ class _MyDrawerState extends State<MyDrawer> {
                 },
               ),
               ListTile(
-                title: const Text("Naive Bayes - Gaussian "),
-                onTap: () {
-                  //action on press
-                  Navigator.pop(context);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const MyGaussian()),
-                  );
-                },
-              ),
-
-              ListTile(
-                title: const Text("Neural Network"),
+                title: const Text("Decision Tree"),
                 onTap: () {
                   //action on press
                   Navigator.pop(context);
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>
-                            const MyNeuralNetWorkClassification()),
+                        builder: (context) => const MyDecisionTree()),
                   );
                 },
               ),
 
+              // ListTile(
+              //   title: const Text("Neural Network"),
+              //   onTap: () {
+              //     //action on press
+              //     Navigator.pop(context);
+              //     Navigator.push(
+              //       context,
+              //       MaterialPageRoute(
+              //           builder: (context) =>
+              //               const MyNeuralNetWorkClassification()),
+              //     );
+              //   },
+              // ),
+
               //more child menu
+            ],
+          ),
+          ExpansionTile(
+            title: const Text("Advices from us"),
+            leading: const Icon(Icons.healing), //add icon
+            childrenPadding: const EdgeInsets.only(left: 60), //children padding
+            children: [
+              ListTile(
+                title: const Text("ChatGPT`s advices"),
+                onTap: () {
+                  //action on press
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const logisticRegression()),
+                  );
+                },
+              ),
+              ListTile(
+                title: const Text("Doctor`s advices"),
+                onTap: () {
+                  //action on press
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const VectorMachine()),
+                  );
+                },
+              ),
             ],
           ),
         ],
