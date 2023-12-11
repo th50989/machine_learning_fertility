@@ -16,6 +16,9 @@ class MyInputPageState extends State<MyInputPage> {
   final formKey1 = GlobalKey<FormState>();
   final formKey2 = GlobalKey<FormState>();
   List<double> data = List<double>.filled(9, 0);
+
+  //
+  //Season? season;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -69,7 +72,14 @@ class Cau1 extends StatefulWidget {
 
 class Cau1State extends State<Cau1> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    MyData myData = Provider.of<MyData>(context, listen: false);
     // Season? season = Season.spring;
     return Column(
       children: [
@@ -92,6 +102,10 @@ class Cau1State extends State<Cau1> {
                   onChanged: (Season? value) {
                     setState(() {
                       widget.season = value;
+
+                      myData.season = value;
+                      // a.season = widget.season;
+                      print('Mydata' + myData.season.toString());
                     });
                   },
                 ),
@@ -106,6 +120,9 @@ class Cau1State extends State<Cau1> {
                   onChanged: (Season? value) {
                     setState(() {
                       widget.season = value;
+                      myData.season = value;
+                      // a.season = widget.season;
+                      print('Mydata' + myData.season.toString());
                     });
                   },
                 ),
@@ -124,6 +141,9 @@ class Cau1State extends State<Cau1> {
                   onChanged: (Season? value) {
                     setState(() {
                       widget.season = value;
+                      myData.season = value;
+                      // a.season = widget.season;
+                      print('Mydata' + myData.season.toString());
                     });
                   },
                 ),
@@ -138,6 +158,9 @@ class Cau1State extends State<Cau1> {
                   onChanged: (Season? value) {
                     setState(() {
                       widget.season = value;
+                      myData.season = value;
+                      // a.season = widget.season;
+                      print('Mydata' + myData.season.toString());
                     });
                   },
                 ),
@@ -210,6 +233,7 @@ class Cau3 extends StatefulWidget {
 class Cau3State extends State<Cau3> {
   @override
   Widget build(BuildContext context) {
+    MyData myData = Provider.of<MyData>(context, listen: false);
     return Column(
       children: [
         const Center(
@@ -231,6 +255,8 @@ class Cau3State extends State<Cau3> {
                   onChanged: (childDiseases? value) {
                     setState(() {
                       widget.cdi = value;
+                      myData.cdi = value;
+                      print(myData.cdi);
                     });
                   },
                 ),
@@ -245,6 +271,8 @@ class Cau3State extends State<Cau3> {
                   onChanged: (childDiseases? value) {
                     setState(() {
                       widget.cdi = value;
+                      myData.cdi = value;
+                      print(myData.cdi);
                     });
                   },
                 ),
@@ -267,6 +295,7 @@ class Cau4 extends StatefulWidget {
 class Cau4State extends State<Cau4> {
   @override
   Widget build(BuildContext context) {
+    MyData myData = Provider.of<MyData>(context, listen: false);
     return Column(
       children: [
         const Center(
@@ -288,6 +317,8 @@ class Cau4State extends State<Cau4> {
                   onChanged: (accidentOrTrauma? value) {
                     setState(() {
                       widget.acdot = value;
+                      myData.aot = value;
+                      print(myData.aot);
                     });
                   },
                 ),
@@ -302,6 +333,8 @@ class Cau4State extends State<Cau4> {
                   onChanged: (accidentOrTrauma? value) {
                     setState(() {
                       widget.acdot = value;
+                      myData.aot = value;
+                      print(myData.aot);
                     });
                   },
                 ),
@@ -324,6 +357,7 @@ class Cau5 extends StatefulWidget {
 class Cau5State extends State<Cau5> {
   @override
   Widget build(BuildContext context) {
+    MyData myData = Provider.of<MyData>(context, listen: false);
     return Column(
       children: [
         const Center(
@@ -344,6 +378,7 @@ class Cau5State extends State<Cau5> {
                   groupValue: widget.si,
                   onChanged: (surgicalIntervention? value) {
                     setState(() {
+                      myData.si = value;
                       widget.si = value;
                     });
                   },
@@ -359,6 +394,7 @@ class Cau5State extends State<Cau5> {
                   onChanged: (surgicalIntervention? value) {
                     setState(() {
                       widget.si = value;
+                      myData.si = value;
                     });
                   },
                 ),
@@ -381,6 +417,7 @@ class Cau6 extends StatefulWidget {
 class Cau6State extends State<Cau6> {
   @override
   Widget build(BuildContext context) {
+    MyData myData = Provider.of<MyData>(context, listen: false);
     return Column(
       children: [
         const Center(
@@ -402,6 +439,7 @@ class Cau6State extends State<Cau6> {
                   onChanged: (hightFeverInLastYear? value) {
                     setState(() {
                       widget.hily = value;
+                      myData.hfily = value;
                     });
                   },
                 ),
@@ -416,6 +454,7 @@ class Cau6State extends State<Cau6> {
                   onChanged: (hightFeverInLastYear? value) {
                     setState(() {
                       widget.hily = value;
+                      myData.hfily = value;
                     });
                   },
                 ),
@@ -431,6 +470,7 @@ class Cau6State extends State<Cau6> {
             onChanged: (hightFeverInLastYear? value) {
               setState(() {
                 widget.hily = value;
+                myData.hfily = value;
               });
             },
           ),
@@ -450,6 +490,7 @@ class Cau7 extends StatefulWidget {
 class Cau7State extends State<Cau7> {
   @override
   Widget build(BuildContext context) {
+    MyData myData = Provider.of<MyData>(context, listen: false);
     return Column(
       children: [
         const Center(
@@ -473,6 +514,7 @@ class Cau7State extends State<Cau7> {
                   onChanged: (alcoholConsumption? value) {
                     setState(() {
                       widget.ac = value;
+                      myData.alcon = value;
                     });
                   },
                 ),
@@ -487,6 +529,7 @@ class Cau7State extends State<Cau7> {
                   onChanged: (alcoholConsumption? value) {
                     setState(() {
                       widget.ac = value;
+                      myData.alcon = value;
                     });
                   },
                 ),
@@ -505,6 +548,7 @@ class Cau7State extends State<Cau7> {
                   onChanged: (alcoholConsumption? value) {
                     setState(() {
                       widget.ac = value;
+                      myData.alcon = value;
                     });
                   },
                 ),
@@ -519,6 +563,7 @@ class Cau7State extends State<Cau7> {
                   onChanged: (alcoholConsumption? value) {
                     setState(() {
                       widget.ac = value;
+                      myData.alcon = value;
                     });
                   },
                 ),
@@ -534,6 +579,7 @@ class Cau7State extends State<Cau7> {
             onChanged: (alcoholConsumption? value) {
               setState(() {
                 widget.ac = value;
+                myData.alcon = value;
               });
             },
           ),
@@ -553,6 +599,7 @@ class Cau8 extends StatefulWidget {
 class Cau8State extends State<Cau8> {
   @override
   Widget build(BuildContext context) {
+    MyData myData = Provider.of<MyData>(context, listen: false);
     return Column(
       children: [
         const Center(
@@ -574,6 +621,7 @@ class Cau8State extends State<Cau8> {
                   onChanged: (smokingHabit? value) {
                     setState(() {
                       widget.sh = value;
+                      myData.smk = value;
                     });
                   },
                 ),
@@ -588,6 +636,7 @@ class Cau8State extends State<Cau8> {
                   onChanged: (smokingHabit? value) {
                     setState(() {
                       widget.sh = value;
+                      myData.smk = value;
                     });
                   },
                 ),
@@ -603,6 +652,7 @@ class Cau8State extends State<Cau8> {
             onChanged: (smokingHabit? value) {
               setState(() {
                 widget.sh = value;
+                myData.smk = value;
               });
             },
           ),
@@ -667,13 +717,15 @@ class Cau9State extends State<Cau9> {
 }
 
 class MyHandleSubmitButton extends StatefulWidget {
-  MyHandleSubmitButton(
-      {super.key,
-      required this.controller_cau2,
-      required this.controller_cau9,
-      this.formKey,
-      this.formKey2,
-      this.data});
+  MyHandleSubmitButton({
+    super.key,
+    required this.controller_cau2,
+    required this.controller_cau9,
+    this.formKey,
+    this.formKey2,
+    this.data,
+  });
+  //Season? season;
   final TextEditingController controller_cau2;
   final TextEditingController controller_cau9;
   final formKey;
@@ -750,7 +802,9 @@ class MyHandleSubmitButtonState extends State<MyHandleSubmitButton> {
     double cau7 = 0.0;
     double cau8 = 0.0;
     double cau9 = 0.0;
-    switch (Cau1().season) {
+    // print(widget.season);
+    MyData myData = Provider.of<MyData>(context, listen: false);
+    switch (myData.season) {
       case Season.autumn:
         cau1 = 1;
       case Season.summer:
@@ -762,10 +816,11 @@ class MyHandleSubmitButtonState extends State<MyHandleSubmitButton> {
         cau1 = -1.0;
       // TODO: Handle this case.
       case null:
+        cau1 = 4.0;
     }
     cau2 = chuyendoiso(double.parse(widget.controller_cau2.text));
     cau9 = chuyendosocau9(double.parse(widget.controller_cau9.text));
-    switch (Cau3().cdi) {
+    switch (myData.cdi) {
       case null:
       case childDiseases.yes:
         cau2 = 0;
@@ -773,7 +828,7 @@ class MyHandleSubmitButtonState extends State<MyHandleSubmitButton> {
         cau2 = 1;
       // TODO: Handle this case.
     }
-    switch (Cau4().acdot) {
+    switch (myData.aot) {
       case null:
       case accidentOrTrauma.no:
         cau4 = 1;
@@ -783,7 +838,7 @@ class MyHandleSubmitButtonState extends State<MyHandleSubmitButton> {
       // TODO: Handle this case.
     }
 
-    switch (Cau5().si) {
+    switch (myData.si) {
       case null:
       case surgicalIntervention.no:
         cau5 = 1;
@@ -792,7 +847,7 @@ class MyHandleSubmitButtonState extends State<MyHandleSubmitButton> {
         cau5 = 0;
       // TODO: Handle this case.
     }
-    switch (Cau6().hily) {
+    switch (myData.hfily) {
       case null:
       case hightFeverInLastYear.more3month:
         cau6 = 0;
@@ -804,7 +859,7 @@ class MyHandleSubmitButtonState extends State<MyHandleSubmitButton> {
         cau6 = -1;
       // TODO: Handle this case.
     }
-    switch (Cau7().ac) {
+    switch (myData.alcon) {
       case null:
       case alcoholConsumption.everyday:
         // TODO: Handle this case.
@@ -825,7 +880,7 @@ class MyHandleSubmitButtonState extends State<MyHandleSubmitButton> {
       // TODO: Handle this case.
     }
 
-    switch (Cau8().sh) {
+    switch (myData.smk) {
       case null:
       case smokingHabit.never:
         cau8 = -1;
@@ -848,7 +903,7 @@ class MyHandleSubmitButtonState extends State<MyHandleSubmitButton> {
     widget.data[7] = cau8;
     widget.data[8] = cau9;
     print(widget.data);
-    MyData myData = Provider.of<MyData>(context, listen: false);
+    //myData = Provider.of<MyData>(context, listen: false);
     myData.updateGlobalVariable(widget.data);
   }
 
