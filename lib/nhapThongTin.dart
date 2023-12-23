@@ -571,18 +571,39 @@ class Cau7State extends State<Cau7> {
             ),
           ],
         ),
-        ListTile(
-          title: const Text('Hardly ever or never'),
-          leading: Radio<alcoholConsumption>(
-            value: alcoholConsumption.hardlyEverOrNever,
-            groupValue: widget.ac,
-            onChanged: (alcoholConsumption? value) {
-              setState(() {
-                widget.ac = value;
-                myData.alcon = value;
-              });
-            },
-          ),
+        Row(
+          children: [
+            Expanded(
+              child: ListTile(
+                title: const Text('Hardly ever'),
+                leading: Radio<alcoholConsumption>(
+                  value: alcoholConsumption.hardlyEver,
+                  groupValue: widget.ac,
+                  onChanged: (alcoholConsumption? value) {
+                    setState(() {
+                      widget.ac = value;
+                      myData.alcon = value;
+                    });
+                  },
+                ),
+              ),
+            ),
+            Expanded(
+              child: ListTile(
+                title: const Text('Never'),
+                leading: Radio<alcoholConsumption>(
+                  value: alcoholConsumption.never,
+                  groupValue: widget.ac,
+                  onChanged: (alcoholConsumption? value) {
+                    setState(() {
+                      widget.ac = value;
+                      myData.alcon = value;
+                    });
+                  },
+                ),
+              ),
+            )
+          ],
         ),
       ],
     );
@@ -823,9 +844,9 @@ class MyHandleSubmitButtonState extends State<MyHandleSubmitButton> {
     switch (myData.cdi) {
       case null:
       case childDiseases.yes:
-        cau2 = 0;
+        cau3 = 0;
       case childDiseases.no:
-        cau2 = 1;
+        cau3 = 1;
       // TODO: Handle this case.
     }
     switch (myData.aot) {
@@ -864,18 +885,20 @@ class MyHandleSubmitButtonState extends State<MyHandleSubmitButton> {
       case alcoholConsumption.everyday:
         // TODO: Handle this case.
 
-        cau7 = 0.25;
-      case alcoholConsumption.hardlyEverOrNever:
+        cau7 = 0.2;
+      case alcoholConsumption.hardlyEver:
+        cau7 = 0.8;
+      case alcoholConsumption.never:
         cau7 = 1;
       // TODO: Handle this case.
       case alcoholConsumption.oncesAweek:
-        cau7 = 0.75;
+        cau7 = 0.8;
       // TODO: Handle this case.
       case alcoholConsumption.severalAday:
         cau7 = 0.0;
       // TODO: Handle this case.
       case alcoholConsumption.severalAweek:
-        cau7 = 0.5;
+        cau7 = 0.6;
 
       // TODO: Handle this case.
     }
@@ -904,7 +927,21 @@ class MyHandleSubmitButtonState extends State<MyHandleSubmitButton> {
     widget.data[8] = cau9;
     print(widget.data);
     //myData = Provider.of<MyData>(context, listen: false);
+    List<String> rawData = [
+      myData.season.toString().split(".")[1], //cau 1
+      widget.controller_cau2.text, //cau 2
+      myData.cdi.toString().split(".")[1], //cau 3
+      myData.aot.toString().split(".")[1], //cau 4
+      myData.si.toString().split(".")[1], //cau 5
+      myData.hfily.toString().split(".")[1], //cau 6
+      myData.alcon.toString().split(".")[1], //cau 7
+      myData.smk.toString().split(".")[1], //cau 8
+      widget.controller_cau9.text
+    ];
+    myData.updateRawData(rawData);
     myData.updateGlobalVariable(widget.data);
+    print(myData.myGlobalVariable);
+    print(myData.rawData);
   }
 
   void _showSecondDialog(BuildContext context) {

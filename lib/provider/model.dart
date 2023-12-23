@@ -19,7 +19,8 @@ enum alcoholConsumption {
 
   oncesAweek,
 
-  hardlyEverOrNever,
+  hardlyEver,
+  never
 }
 
 enum smokingHabit { never, occasional, daily }
@@ -27,10 +28,28 @@ enum smokingHabit { never, occasional, daily }
 class MyData with ChangeNotifier {
   List<double> _myGlobalVariable = [];
 
+  String _result = "";
+
+  String get result => _result;
+
+  List<String> _rawData = [];
+
+  List<String> get rawData => _rawData;
+
   List<double> get myGlobalVariable => _myGlobalVariable;
 
   void updateGlobalVariable(List<double> newValue) {
     _myGlobalVariable = newValue;
+    notifyListeners();
+  }
+
+  void updateResult(String newValue) {
+    _result = newValue;
+    notifyListeners();
+  }
+
+  void updateRawData(List<String> newValue) {
+    _rawData = newValue;
     notifyListeners();
   }
 

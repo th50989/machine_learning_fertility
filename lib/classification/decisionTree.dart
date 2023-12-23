@@ -1,4 +1,5 @@
 import 'package:fertility_app/provider/model.dart';
+import 'package:fertility_app/widget/result.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,63 +14,40 @@ class MyDecisionTreeState extends State<MyDecisionTree> {
   var ketqua = -1;
   @override
   Widget build(BuildContext context) {
-    if (ketqua == 0) {
-      return Scaffold(
-        appBar: AppBar(title: Text('Decision Tree')),
-        body: Center(
-          child: Column(children: [
-            ElevatedButton(
-                onPressed: () {
-                  handledata(context, ketqua);
-                },
-                child: Text('Check your fertility')),
-            Text('Your fertility seems not normal')
-          ]),
-        ),
-      );
-    }
-    if (ketqua == 1) {
-      return Scaffold(
-        appBar: AppBar(title: Text('Decision Tree')),
-        body: Center(
-          child: Column(children: [
-            ElevatedButton(
-                onPressed: () {
-                  handledata(context, ketqua);
-                },
-                child: Text('Check your fertility')),
-            Text('Your fertility seems normal')
-          ]),
-        ),
-      );
-    } else {
-      return Scaffold(
-        appBar: AppBar(title: Text('Decision Tree')),
-        body: Center(
-          child: Column(children: [
-            ElevatedButton(
-                onPressed: () {
-                  var kq = handledata(context, ketqua);
-                  print(kq);
-                  if (kq == 1) {
-                    Future.delayed(Duration(seconds: 2), () {
-                      setState(() {
-                        ketqua = 1;
-                      });
+    return Scaffold(
+      appBar: AppBar(title: Text('Decision Tree')),
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        child: Center(
+          child: ElevatedButton(
+              onPressed: () {
+                var kq = handledata(context, ketqua);
+                print(kq);
+                if (kq == 1) {
+                  Future.delayed(Duration(seconds: 2), () {
+                    setState(() {
+                      ketqua = 1;
                     });
-                  } else {
-                    Future.delayed(Duration(seconds: 2), () {
-                      setState(() {
-                        ketqua = 0;
-                      });
+                    showDialog(
+                        context: context, builder: (_) => Result(kq: ketqua));
+                  });
+                } else {
+                  Future.delayed(Duration(seconds: 2), () {
+                    setState(() {
+                      ketqua = 0;
                     });
-                  }
-                },
-                child: Text('Check your fertility')),
-          ]),
+                    showDialog(
+                        context: context, builder: (_) => Result(kq: ketqua));
+                  });
+                }
+              },
+              child: Text(
+                'Check your fertility',
+                style: TextStyle(fontSize: 30),
+              )),
         ),
-      );
-    }
+      ),
+    );
   }
 }
 
@@ -94,8 +72,10 @@ double handledata(BuildContext context, int ketqua) {
     Navigator.of(context).pop(); // Close the first popup
     // Show the second popup
   });
-
-  return score(myData.myGlobalVariable);
+  var result = score(myData.myGlobalVariable);
+  myData.updateResult(result.toString());
+  print('My result is ' + result.toString());
+  return result;
 }
 
 double score(List<double> input) {

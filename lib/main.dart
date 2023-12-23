@@ -1,4 +1,6 @@
-import 'package:fertility_app/classification/gaussian.dart';
+import 'package:fertility_app/advice/cubit/cubit/get_advice_cubit.dart';
+import 'package:fertility_app/advice/view/gpt_advice.dart';
+import 'package:fertility_app/classification/decisionTree.dart';
 import 'package:fertility_app/classification/logisticRegression.dart';
 import 'package:fertility_app/classification/neuralNetwork.dart';
 import 'package:fertility_app/classification/supportVectorMachine.dart';
@@ -8,15 +10,21 @@ import 'package:fertility_app/regression/neuralNetwork.dart';
 import 'package:fertility_app/nhapThongTin.dart';
 import 'package:fertility_app/splashScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 void main() {
   runApp(ChangeNotifierProvider(
-    create: (context) => MyData(),
-    child: MaterialApp(
-      home: MySplashScreen(),
-    ),
-  ));
+      create: (context) => MyData(),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<GetAdviceCubit>(
+              lazy: false, create: (BuildContext context) => GetAdviceCubit())
+        ],
+        child: MaterialApp(
+          home: MySplashScreen(),
+        ),
+      )));
 }
 
 class MyApp extends StatefulWidget {
@@ -164,8 +172,7 @@ class _MyDrawerState extends State<MyDrawer> {
                   Navigator.pop(context);
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => const logisticRegression()),
+                    MaterialPageRoute(builder: (context) => const GptAdvice()),
                   );
                 },
               ),
