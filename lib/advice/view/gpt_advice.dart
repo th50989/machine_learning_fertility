@@ -46,22 +46,26 @@ void showdialog(BuildContext context) {
               },
               child: Text('Back'))
         ],
-        content: BlocBuilder<GetAdviceCubit, GetAdviceState>(
-            builder: (context, state) {
-          if (state is GetAdviceInitial) {
-            return Center(
-              child: Transform.scale(
-                scale: 1,
-                child: const CircularProgressIndicator(),
-              ),
-            );
-          } else if (state is GetAdviceSuccess) {
-            return Text(state.advice);
-          } else if (state is GetAdviceFailed) {
-            return Text(state.error);
-          }
-          return Container();
-        }),
+        content: SizedBox(
+          width: 900,
+          height: 600,
+          child: BlocBuilder<GetAdviceCubit, GetAdviceState>(
+              builder: (context, state) {
+            if (state is GetAdviceInitial) {
+              return Center(
+                child: Transform.scale(
+                  scale: 1,
+                  child: const CircularProgressIndicator(),
+                ),
+              );
+            } else if (state is GetAdviceSuccess) {
+              return SingleChildScrollView(child: Text(state.advice));
+            } else if (state is GetAdviceFailed) {
+              return Text(state.error);
+            }
+            return Container();
+          }),
+        ),
       );
     },
   );
